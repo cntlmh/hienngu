@@ -1,7 +1,13 @@
 ﻿#include<stdio.h>
-int cong(int a, int b);
+#include "toan.h"
+
 void main()
 {
-	cong(3, 4);
-	printf("Cong %d\r\n", cong);
+	int x, y;
+	printf("Nhap 2 so nguyen x va y: ");
+	scanf_s("%d %d", &x, &y);
+	printf("Cong %d\r\n", cong(x,y));
+	printf("Tru %d\r\n", tru(x, y));\
+	printf("Nhan %d\r\n", nhan(x, y));
+	printf("Chia %0.3f\r\n", chia(x, y));
 }
