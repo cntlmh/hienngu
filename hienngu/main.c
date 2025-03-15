@@ -1,5 +1,7 @@
 ﻿#include<stdio.h>
+int cong(int a, int b);
 void main()
 {
-	printf("Hello world");
+	cong(3, 4);
+	printf("Cong %d\r\n", cong);
 }
