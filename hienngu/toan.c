@@ -192,3 +192,11 @@ void hoan_vi_hai_so_nguyen(int* a, int* b)
 	*b = temp;
 }
 
+// Bài 9: Xây dựng hàm. Sắp xếp mảng arr theo giá trị tăng dần
+/*
+Chuc nang: Sắp xếp mảng arr theo giá trị tăng dần
+Input:
+	int arr[] là mảng số nguyên
+	int n là số phần tử của mảng	
+Output: Mảng sau khi sắp xếp theo giá trị tăng dần
+*/
