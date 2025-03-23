@@ -1,4 +1,6 @@
 ﻿#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 int fan_status(char *p_data)
 {
 	int comma = 0;
@@ -79,19 +81,19 @@ char* TimChuoi(char* str, char* sub_str)
 int TrangThaiFan(char* data)
 {
 	// format data: HTTP1.1 200 OK{"light": "on","fan" : "off","motor" : "off"}
-	char fan_state[16] = { 0 };
 	// B1:search tới "fan" : "
 	char* pattern = "\"fan\" : \"";
 	char* sub_pos = TimChuoi(data, pattern);
 	sub_pos = sub_pos + SoLuongKyTu(pattern);
 	// B2:lấy dữ liệu bỏ vào fan_state đến khi nào găp " thì ngừng lại
-	int pos = 0;
-	while ('"' != *sub_pos)
+	int dem = 0;
+	while ('"' != sub_pos[dem])
 	{
-		fan_state[pos] = *sub_pos;
-		pos++;
-		sub_pos++;
+		dem++;
 	}
+	char* fan_state = malloc(dem + 1);
+	memset(fan_state,0,dem+1);
+	memcpy(fan_state, sub_pos, dem);
 	// B3:so sánh với "on" hoặc "off" để return kết quả là 1 hay là 0
 	char* p_status = "on";
 	if (0==TimChuoi(fan_state, p_status))
