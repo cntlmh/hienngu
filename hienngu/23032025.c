@@ -1,6 +1,129 @@
 ﻿#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "23032025.h"
+#include "math.h"
+//-------------------------------------------- Bai Tap --------------------------------------------
+// file struct.txt
+phan_so_t nhan_hai_phan_so(phan_so_t a, phan_so_t b)
+{
+	phan_so_t kq;
+	kq.tu = a.tu * b.tu;
+	kq.mau = a.mau * b.mau;
+	return rut_gon_phan_so(kq);
+}
+phan_so_t chia_hai_phan_so(phan_so_t a, phan_so_t b)
+{
+	phan_so_t kq;
+	kq.tu = a.tu * b.mau;
+	kq.mau = a.mau * b.tu;
+	return rut_gon_phan_so(kq);
+}
+phan_so_t cong_hai_phan_so(phan_so_t a, phan_so_t b)
+{
+	phan_so_t kq;
+	kq.tu = a.tu * b.mau + b.tu* a.mau;
+	kq.mau = a.mau * b.mau;
+	return rut_gon_phan_so(kq);
+}
+phan_so_t tru_hai_phan_so(phan_so_t a, phan_so_t b)
+{
+	phan_so_t kq;
+	kq.tu = a.tu * b.mau - b.tu * a.mau;
+	kq.mau = a.mau * b.mau;
+	return rut_gon_phan_so(kq);
+}
+phan_so_t rut_gon_phan_so(phan_so_t a)
+{
+	phan_so_t kq;
+	int min = a.tu < a.mau ? a.tu : a.mau;
+	int ucln = 1;
+	for (int i = 1; i <= (int) (sqrt(min)+1); i++)
+	{
+		if ((a.tu % i == 0) && (a.mau % (a.tu / i) == 0))
+		{
+			ucln = a.tu / i;
+			break;
+		}
+	}
+	kq.tu = a.tu/ucln;
+	kq.mau = a.mau/ucln;
+	return kq;
+}
+	
+void nhap_hoc_sinh(st_hoc_sinh * danh_sach_hoc_sinh, int * so_luong_nhap)
+{
+	*so_luong_nhap = 0;
+	printf("Nhap so luong hoc sinh ban muon nhap: \r\n");
+	scanf_s("%d", so_luong_nhap);
+	printf("Vui long nhap thong tin cua %d hoc sinh: \r\n", *so_luong_nhap);
+	for (int i = 0; i < *so_luong_nhap; i++)
+	{
+		printf("Nhap ten hoc sinh thu %d: \r\n",i+1);
+		while (getchar() != '\n');
+		fgets(danh_sach_hoc_sinh->ten, sizeof(danh_sach_hoc_sinh->ten), stdin);
+		while (getchar() != '\n');
+		printf("Nhap tuoi hoc sinh: \r\n");
+		scanf_s("%d", &danh_sach_hoc_sinh->tuoi);
+		printf("Nhap diem toan hoc sinh: \r\n");
+		scanf_s("%f", &danh_sach_hoc_sinh->diem_toan);
+		printf("Nhap diem van hoc sinh: \r\n");
+		scanf_s("%f", &danh_sach_hoc_sinh->diem_van);
+		danh_sach_hoc_sinh->trung_binh = (danh_sach_hoc_sinh->diem_toan + danh_sach_hoc_sinh->diem_van) / 2;
+		if (danh_sach_hoc_sinh->trung_binh >= 8)
+		{
+			strcpy_s(danh_sach_hoc_sinh->xep_loai,sizeof(danh_sach_hoc_sinh->xep_loai), "Gioi");
+		}
+		else if (danh_sach_hoc_sinh->trung_binh >= 6.5)
+		{
+			strcpy_s(danh_sach_hoc_sinh->xep_loai, sizeof(danh_sach_hoc_sinh->xep_loai), "Kha");
+		}
+		else if (danh_sach_hoc_sinh->trung_binh >= 5)
+		{
+			strcpy_s(danh_sach_hoc_sinh->xep_loai, sizeof(danh_sach_hoc_sinh->xep_loai), "Trung Binh");
+		}
+		else
+		{
+			strcpy_s(danh_sach_hoc_sinh->xep_loai, sizeof(danh_sach_hoc_sinh->xep_loai), "Yeu");
+		}
+		danh_sach_hoc_sinh++;
+	}
+}
+void in_danh_sach_hoc_sinh(st_hoc_sinh* danh_sach_hoc_sinh, int so_hoc_sinh)
+{
+	printf("Danh sach hoc sinh: \r\n");
+	for (int i = 0; i < so_hoc_sinh; i++)
+	{
+		printf("Hoc sinh thu %d:\r\n", i + 1);
+		printf("\tTen: %s\r\n", danh_sach_hoc_sinh->ten);
+		printf("\tTuoi: %d\r\n", danh_sach_hoc_sinh->tuoi);
+		printf("\tDiem toan: %.2f\r\n", danh_sach_hoc_sinh->diem_toan);
+		printf("\tDiem van: %.2f\r\n", danh_sach_hoc_sinh->diem_van);
+		printf("\tDiem trung binh: %.2f\r\n", danh_sach_hoc_sinh->trung_binh);
+		printf("\tXep loai: %s\r\n", danh_sach_hoc_sinh->xep_loai);
+	}
+}
+void in_hoc_sinh_co_diem_tb_cao_nhat(st_hoc_sinh* danh_sach_hoc_sinh, int so_hoc_sinh)
+{
+	int vi_tri = 0;
+	float diem_trb_cao_nhat = danh_sach_hoc_sinh[0].trung_binh;
+	for (int i = 0; i < so_hoc_sinh; i++)
+	{
+		if (danh_sach_hoc_sinh[i].trung_binh > diem_trb_cao_nhat)
+		{
+			diem_trb_cao_nhat = danh_sach_hoc_sinh[i].trung_binh;
+			vi_tri = i;
+		}
+	}
+	printf("Hoc sinh co diem trung binh cao nhat la: %f \r\n", diem_trb_cao_nhat);
+	printf("\tTen: %s\r\n", danh_sach_hoc_sinh[vi_tri].ten);
+	printf("\tTuoi: %d\r\n", danh_sach_hoc_sinh[vi_tri].tuoi);
+	printf("\tDiem toan: %.2f\r\n", danh_sach_hoc_sinh[vi_tri].diem_toan);
+	printf("\tDiem van: %.2f\r\n", danh_sach_hoc_sinh[vi_tri].diem_van);
+	printf("\tDiem trung binh: %.2f\r\n", danh_sach_hoc_sinh[vi_tri].trung_binh);
+	printf("\tXep loai: %s\r\n", danh_sach_hoc_sinh[vi_tri].xep_loai);
+}
+//-------------------------------------------- Bai Hoc --------------------------------------------
 int fan_status(char *p_data)
 {
 	int comma = 0;
@@ -104,3 +227,4 @@ int TrangThaiFan(char* data)
 		return 1;
 	}
 }
+
