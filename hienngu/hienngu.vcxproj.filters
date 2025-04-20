@@ -21,5 +21,28 @@
     <ClCompile Include="toan.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="chuoi.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="baitap16032025.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="23032025.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="toan.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="chuoi.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="baitap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="23032025.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

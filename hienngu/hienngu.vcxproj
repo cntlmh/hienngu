@@ -19,8 +19,17 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="23032025.c" />
+    <ClCompile Include="baitap16032025.c" />
+    <ClCompile Include="chuoi.c" />
     <ClCompile Include="main.c" />
     <ClCompile Include="toan.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="23032025.h" />
+    <ClInclude Include="baitap.h" />
+    <ClInclude Include="chuoi.h" />
+    <ClInclude Include="toan.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>

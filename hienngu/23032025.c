@@ -62,6 +62,7 @@ void nhap_hoc_sinh(st_hoc_sinh * danh_sach_hoc_sinh, int * so_luong_nhap)
 		printf("Nhap ten hoc sinh thu %d: \r\n",i+1);
 		while (getchar() != '\n');
 		fgets(danh_sach_hoc_sinh->ten, sizeof(danh_sach_hoc_sinh->ten), stdin);
+		//scanf("%[^\n]", danh_sach_hoc_sinh->ten);
 		while (getchar() != '\n');
 		printf("Nhap tuoi hoc sinh: \r\n");
 		scanf_s("%d", &danh_sach_hoc_sinh->tuoi);

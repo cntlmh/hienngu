@@ -1,27 +1,53 @@
-﻿#include<stdio.h>
-#include "toan.h"
-#include "chuoi.h"
-#include "23032025.h"
+﻿﻿#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <stdint.h>
+#include <string.h>
+#include <malloc.h>
+#include <math.h>
 
+float fx(float x)
+{
+	return x * x;
+}
+
+float gx(float x)
+{
+	return 2 * x * x + x + 1;
+}
+
+float tx(float x)
+{
+	return 2 * sin(x) + 1;
+}
+
+float tinhTichPhan(float a, float b, float (*fp) (float))
+{
+	float S = 0;
+	float h = (b - a) / 1000;
+	for (int i = 0; i < 1000; i++)
+	{
+		float db = fp(a + h * i);
+		float dl = fp(a + (i + 1) * h);
+		S += ((dl + db) / 2) * h;
+	}
+	return S;
+}
+
+typedef float (*ham_t)(int, char);
+
+float function(int x, char y)
+{
+	printf("Ham function da duoc chay (x = %d) ...\n", x);
+}
+
+
+void function_1()
+{
+	printf("Day la function_1 \n");
+}
 
 
 void main()
 {
-	phan_so_t a = { 6,8 };
-	phan_so_t b = { .tu = 1, .mau = 2};
-	phan_so_t kq = nhan_hai_phan_so(a, b);
-	printf("ket qua nhan hai phan so la: %d/%d\r\n", kq.tu, kq.mau);
-	kq = chia_hai_phan_so(a, b);
-	printf("ket qua chia hai phan so la: %d/%d\r\n", kq.tu, kq.mau);
-	kq = cong_hai_phan_so(a, b);
-	printf("ket qua cong hai phan so la: %d/%d\r\n", kq.tu, kq.mau);
-	kq = tru_hai_phan_so(a, b);
-	printf("ket qua tru hai phan so la: %d/%d\r\n", kq.tu, kq.mau);
-	kq = rut_gon_phan_so(a);
-	printf("ket qua rut gon hai phan so la: %d/%d\r\n", kq.tu, kq.mau);
-	st_hoc_sinh danh_sach_hoc_sinh[100];
-	int so_luong_nhap = 0;
-	nhap_hoc_sinh(danh_sach_hoc_sinh, &so_luong_nhap);
-	in_danh_sach_hoc_sinh(danh_sach_hoc_sinh, so_luong_nhap);
-	in_hoc_sinh_co_diem_tb_cao_nhat(danh_sach_hoc_sinh, so_luong_nhap);
+	
 }
