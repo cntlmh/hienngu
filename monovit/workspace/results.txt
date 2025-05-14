@@ -1,0 +1,19 @@
+
+ model_name: ./weight 
+  abs_rel |   sq_rel |     rmse | rmse_log |       a1 |       a2 |       a3 | 
+ &   0.058  &   0.172  &   2.415  &   0.082  &   0.976  &   0.996  &   0.999  \\
+ model_name: ./weight 
+  abs_rel |   sq_rel |     rmse | rmse_log |       a1 |       a2 |       a3 | 
+ &   0.058  &   0.172  &   2.415  &   0.082  &   0.976  &   0.996  &   0.999  \\
+ model_name: ./weight 
+  abs_rel |   sq_rel |     rmse | rmse_log |       a1 |       a2 |       a3 | 
+ &   0.058  &   0.172  &   2.415  &   0.082  &   0.976  &   0.996  &   0.999  \\
+ model_name: ./weight 
+  abs_rel |   sq_rel |     rmse | rmse_log |       a1 |       a2 |       a3 | 
+ &   0.058  &   0.172  &   2.415  &   0.082  &   0.976  &   0.996  &   0.999  \\
+ model_name: ./weight 
+  abs_rel |   sq_rel |     rmse | rmse_log |       a1 |       a2 |       a3 | 
+ &   0.058  &   0.172  &   2.415  &   0.082  &   0.976  &   0.996  &   0.999  \\
+ model_name: ./weight 
+  abs_rel |   sq_rel |     rmse | rmse_log |       a1 |       a2 |       a3 | 
+ &   0.058  &   0.172  &   2.415  &   0.082  &   0.976  &   0.996  &   0.999  \\
