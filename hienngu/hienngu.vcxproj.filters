@@ -21,9 +21,15 @@
     <ClCompile Include="phan_so.cpp">
       <Filter>Resource Files</Filter>
     </ClCompile>
+    <ClCompile Include="persion_info.cpp">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="phan_so.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="persion_info.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
