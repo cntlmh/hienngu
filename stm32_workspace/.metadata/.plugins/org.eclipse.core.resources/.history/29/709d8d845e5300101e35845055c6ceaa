@@ -1,0 +1,179 @@
+/*
+ * main.c
+ *
+ *  Created on: Jun 21, 2025
+ *      Author: Dell
+ */
+#include "main.h"
+
+#define GPIO_BASE_ADDR      (0x40020000U)
+#define GPIOA_BASE_ADDR     (GPIO_BASE_ADDR + 0x000)
+#define GPIOB_BASE_ADDR     (GPIO_BASE_ADDR + 0x400)
+#define GPIOC_BASE_ADDR     (GPIO_BASE_ADDR + 0x800)
+#define GPIODR_BASE_ADDR    (GPIO_BASE_ADDR + 0xC00)
+#define GPIODR              ((volatile st_gpiox_register_set  *) GPIODR_BASE_ADDR)
+#define GPIOAR              ((volatile st_gpiox_register_set  *) GPIOA_BASE_ADDR)
+#define SYSCFGR             ((volatile st_syscfg_register_set *) 0x40013800)
+#define EXTIR               ((volatile st_exti_register_set   *) 0x40013C00)
+#define NVICR(x)            ((volatile uint32_t               *) (0xE000E100 + 0x04 * x))
+#define STKR                ((volatile st_systick_register_set *) (0xE000E010))
+#define CPU_FREQ            12000000U
+typedef struct {
+	uint32_t MODER;
+	uint32_t OTYPER;
+	uint32_t OSPEEDR;
+	uint32_t PUPDR;
+	uint32_t IDR;
+	uint32_t ODR;
+	uint32_t BSRR;
+	uint32_t LCKR;
+	uint32_t AFRL;
+	uint32_t AFRH;
+} st_gpiox_register_set;
+
+typedef struct {
+	uint32_t MEMRMP;
+	uint32_t PMC;
+	uint32_t EXTICR1;
+	uint32_t EXTICR2;
+	uint32_t EXTICR3;
+	uint32_t EXTICR4;
+	uint32_t CMPCR;
+} st_syscfg_register_set;
+
+typedef struct {
+	uint32_t IMR;
+	uint32_t EMR;
+	uint32_t RTSR;
+	uint32_t FTSR;
+	uint32_t SWIER;
+	uint32_t PR;
+} st_exti_register_set;
+
+typedef struct {
+	uint32_t CTRL;
+	uint32_t LOAD;
+	uint32_t VAL;
+} st_systick_register_set;
+
+typedef enum
+{
+	// PD12
+	LED_GREEN,
+	// PD13
+	LED_ORANGE,
+	// PD14
+	LED_RED,
+	// PD15
+	LED_BLUE
+} led_t;
+
+typedef enum
+{
+	OFF_LED,
+	ON_LED,
+} led_state_t;
+
+led_state_t g_state;
+uint32_t led_green_state = OFF_LED;
+void Leds_Init()
+{
+	// GPIOD setting
+    __HAL_RCC_GPIOD_CLK_ENABLE();
+	GPIODR->MODER &= ~(0xFF<<24);
+	GPIODR->MODER |= (0x55<<24);
+	GPIODR->OSPEEDR &= ~(0xFF<<24);
+	GPIODR->OSPEEDR |= (0x55<<24);
+	GPIODR->PUPDR &= ~(0xFF<<24);
+	GPIODR->PUPDR |= (0xAA<<24);
+
+	//GPIOA setting
+    __HAL_RCC_GPIOA_CLK_ENABLE();
+	GPIOAR->MODER &= ~(0x3);
+	GPIOAR->OSPEEDR &= ~(0x3);
+	GPIOAR->OSPEEDR |= (0b01);
+	GPIOAR->PUPDR &= ~(0x3);
+	GPIOAR->PUPDR |= (0b10);
+	g_state = (led_state_t)((GPIOAR->IDR)&0x1);
+
+	//__HAL_RCC_SYSCFG_CLK_ENABLE();
+	//SYSCFGR->EXTICR1 &=~(0xF<<0);
+	//EXTIR->IMR |=(0x1<<0);
+	//EXTIR->FTSR |=(0x1<<0);
+	//EXTIR->RTSR &=~(0x1<<0);
+	//*NVICR(0) |=(0x1<<6);
+	// TODO: config PD12, PD13, PD14, PD15 in OUTPUT MDOE
+}
+
+
+void Led_Ctrl(led_t led, led_state_t state)
+{
+	// TODO: write state ODR
+	uint8_t pin = 12 + led;
+	GPIODR->ODR = (GPIODR->ODR & ~(1 << pin)) | ((state & 0x1) << pin);
+}
+
+void Led_Ctrl_Baitap1(led_t led)
+{
+	// TODO: write state ODR
+	uint8_t pin = 12 + led;
+	uint8_t mask = 0x1;
+
+	if(mask == ((GPIOAR->IDR)&mask))
+	{
+		GPIODR->ODR = (GPIODR->ODR & ~(1 << pin)) | ((ON_LED & 0x1) << pin);
+	} else {
+		GPIODR->ODR = (GPIODR->ODR & ~(1 << pin)) | ((OFF_LED & 0x1) << pin);
+	}
+}
+
+void init_timer_1second(void)
+{
+	STKR->LOAD = (CPU_FREQ-1);
+	STKR->VAL = 0;
+	STKR->CTRL = (0b111);
+}
+
+void Led_Ctrl_Baitap2(led_t led)
+{
+	// TODO: write state ODR
+	uint8_t pin = 12 + led;
+	static uint8_t prev_button = 1;
+	uint8_t curr_button = (GPIOAR->IDR & 0x1);
+
+	if (prev_button == 1 && curr_button == 0)
+	{
+			g_state = (g_state==OFF_LED)?(ON_LED):(OFF_LED);
+			GPIODR->ODR = (GPIODR->ODR & ~(1 << pin)) | ((g_state & 0x1) << pin);
+	}
+	prev_button = curr_button;
+}
+void EXTI0_IRQHandler(void)
+{
+	//if(EXTIR->PR&(1<<0))
+	//{
+	//	EXTIR->PR |= (1<<0);
+	//	.......;
+	//}
+}
+
+void SysTick_Handler(void)
+{
+	led_green_state = (led_green_state==OFF_LED)?(ON_LED):(OFF_LED);
+	Led_Ctrl(LED_GREEN, led_green_state);
+}
+
+int main()
+{
+	HAL_Init();
+	Leds_Init();
+	init_timer_1second();
+	while(1)
+	{
+		Led_Ctrl_Baitap1(LED_RED);
+		//Led_Ctrl(LED_BLUE, ON_LED);
+		//Led_Ctrl(LED_ORANGE, ON_LED);
+		//Led_Ctrl(LED_RED, ON_LED);
+		//Led_Ctrl_Baitap2(LED_RED);
+	}
+}
